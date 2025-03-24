@@ -1,0 +1,29 @@
+- name: change the web port
+  hosts: all
+  become: true
+  gather_facts: true
+  vars_files:
+    - vars.yaml
+  tasks:
+    - name: find and change webport
+      lineinfile:
+        dest: /etc/httpd/conf/httpd.conf
+        regexp: '^Listen\s[0-9]+'
+        line: Listen {{ webport }}
+        validate: httpd -t -f %s
+      notify:
+        - restart webport
+    - name: make directory
+      file:
+        path: /var/www/html
+        state: directory
+    - name: make file
+      file:
+        path: /var/www/html/index.html
+        state: touch
+
+  handlers:
+    - name: restart webport
+      service:
+        name: httpd
+        state: restarted
