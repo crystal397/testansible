@@ -1,0 +1,19 @@
+- name: install web using if
+  hosts: all
+  become: true
+  gather_facts: true
+  vars:
+    dist_name: "{{ 'amazon' if ansible_distribution == 'Amazon'
+                  else 'ubuntu' if ansible_distribution == 'Ubuntu'
+                  else 'others'
+                  }}"
+    
+  tasks:
+    - name: install web server
+      include_tasks: "{{ dist_name }}.yml"
+
+    - name: debug private IP address
+      debug:
+        msg: 
+          - "node name : {{ ansible_nodename }}"
+          - "IPv4 : {{ ansible_all_ipv4_addresses }}"

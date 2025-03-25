@@ -3,20 +3,20 @@
   become: true
   gather_facts: true
   tasks:
-    - name: Rocky > httpd
+    - name: Amazon > httpd
       action: "{{ ansible_pkg_mgr }} name=httpd state=present"
-      when: ansible_distribution == 'Rocky'
+      when: ansible_distribution == 'Amazon'
 
-    - name: Rocky > index.html
+    - name: Amazon > index.html
       get_url: url=https://www.daum.net dest=/var/www/html/index.html
-      when: ansible_distribution == 'Rocky'
+      when: ansible_distribution == 'Amazon'
 
-    - name: Rocky > start httpd
+    - name: Amazon > start httpd
       service: name=httpd state=started
-      when: ansible_distribution == 'Rocky'
+      when: ansible_distribution == 'Amazon'
 
     - name: Ubuntu > nginx
-      action: "{{ ansible_pkg_mgr }} name=nginx state=present"
+      action: "apt name=nginx state=present"
       when: ansible_distribution == 'Ubuntu'
 
     - name: Ubuntu > index.html

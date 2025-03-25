@@ -1,0 +1,12 @@
+- name: Install web server based on distribution
+  hosts: all
+  become: true
+
+  tasks:
+    - name: in amazon
+      include_tasks: amazon.yml
+      when: ansible_distribution == 'Amazon'
+
+    - name: in ubuntu
+      include_tasks: ubuntu.yml
+      when: ansible_distribution == 'Ubuntu'
